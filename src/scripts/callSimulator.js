@@ -23,8 +23,8 @@ async function bookSeat({ seatNo, nameOfBooker }) {
 
 async function main() {
   const requests = [
-    { seatNo: 55, nameOfBooker: "Jane Smith" },
-    { seatNo: 55, nameOfBooker: "Alice Johnson" },
+    { seatNo: 53, nameOfBooker: "Jane Smith" },
+    { seatNo: 53, nameOfBooker: "Alice Johnson" },
   ];
   const resultPromises = [];
   for (const request of requests) {
