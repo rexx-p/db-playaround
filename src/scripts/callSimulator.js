@@ -23,32 +23,10 @@ async function bookSeat({ seatNo, nameOfBooker }) {
   }
 }
 
-async function addAndBookSeat({ seatNo, nameOfBooker }) {
-  try {
-    const response = await axios.post(`${BASE_URL}/add-and-book-seat`, {
-      seatNo,
-      nameOfBooker,
-    });
-    return {
-      success: true,
-      message: `Seat ${seatNo} added and booked by ${nameOfBooker}`,
-      data: response.data,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: `Failed to add and book seat ${seatNo} for ${nameOfBooker}: ${
-        error.response?.data?.error || error.message
-      }`,
-      error: error,
-    };
-  }
-}
-
 async function testBookSeat() {
   const bookingRequests = [
-    { seatNo: 674, nameOfBooker: "Jane Smith" },
-    { seatNo: 674, nameOfBooker: "John Doe" },
+    { seatNo: 43, nameOfBooker: "Jane Smith" },
+    { seatNo: 43, nameOfBooker: "John Doe" },
   ];
 
   const bookingResults = await Promise.all(
@@ -63,25 +41,4 @@ async function testBookSeat() {
   });
 }
 
-async function testAddAndBookSeat() {
-  const bookingRequests = [
-    { seatNo: 23123, nameOfBooker: "Rex" },
-    { seatNo: 23123, nameOfBooker: "Jane Smith" },
-
-  ];
-
-  const bookingResults = await Promise.all(
-    bookingRequests.map((request) => addAndBookSeat(request))
-  );
-
-  bookingResults.forEach((result) => {
-    if (result.success) {
-      console.log("✅", result.message);
-    } else {
-      console.error("❌", result.message);
-    }
-  });
-}
-
-//testAddAndBookSeat();
 testBookSeat();
