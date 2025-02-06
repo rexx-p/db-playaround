@@ -25,8 +25,8 @@ async function bookSeat({ seatNo, nameOfBooker }) {
 
 async function testBookSeat() {
   const bookingRequests = [
-    { seatNo: 43, nameOfBooker: "Jane Smith" },
-    { seatNo: 43, nameOfBooker: "John Doe" },
+    { seatNo: 45, nameOfBooker: "Jane Smith" },
+    { seatNo: 45, nameOfBooker: "John Doe" },
   ];
 
   const bookingResults = await Promise.all(

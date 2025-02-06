@@ -48,7 +48,7 @@ router.post("/book-seat", async (req, res) => {
     console.log('[book-seat] Starting database transaction');
     // Find and book the seat in a transaction to prevent race conditions
 
-
+    const result = await Multiplex.sequelize.transaction(async (t) => {
       console.log(`[book-seat] Searching for seat: ${seatNumber}`);
       // Find the seat with a lock to prevent concurrent bookings
       const seat = await Multiplex.findOne({
@@ -56,6 +56,8 @@ router.post("/book-seat", async (req, res) => {
           seatNo: seatNumber,
           isBooked: false,
         },
+        lock: true,
+        transaction: t,
       });
 
       if (!seat) {
@@ -63,6 +65,8 @@ router.post("/book-seat", async (req, res) => {
         // Check if seat exists at all to provide better error message
         const seatExists = await Multiplex.findOne({
           where: { seatNo: seatNumber },
+          transaction: t,
+          lock: true,
         });
 
         if (seatExists) {
@@ -83,12 +87,17 @@ router.post("/book-seat", async (req, res) => {
         {
           isBooked: true,
           bookedBy: nameOfBooker.trim(),
-        }
+        },
+        { transaction: t }
       );
+
+      return seat;
+    });
 
     console.log(`[book-seat] Successfully booked seat ${seatNumber} for ${nameOfBooker}`);
     return res.status(200).json({
       message: "Seat booked successfully",
+      seat: result,
     });
   } catch (error) {
     console.error("[book-seat] Error booking seat:", error);
