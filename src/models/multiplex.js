@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     seatNo: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
     },
     isBooked: {
       type: DataTypes.BOOLEAN,
